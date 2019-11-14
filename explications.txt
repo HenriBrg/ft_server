@@ -9,3 +9,14 @@ Les fichiers de configuration de Nginx sont dans le dossier etc/nginx/
 -- PHP
 
 -- WORDPRESS
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+LEMP Stack & Docker
+
+https://www.itzgeek.com/how-tos/linux/debian/how-to-install-phpmyadmin-with-nginx-on-debian-10.html
+https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04
