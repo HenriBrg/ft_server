@@ -1,0 +1,11 @@
+-- DOCKER
+5min20 - Explication du workflow Docker
+https://www.youtube.com/watch?v=caXHwYC3tq8
+
+-- NGINX
+
+Les fichiers de configuration de Nginx sont dans le dossier etc/nginx/
+
+-- PHP
+
+-- WORDPRESS
