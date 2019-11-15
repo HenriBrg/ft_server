@@ -1,0 +1,8 @@
+docker build ft_server/
+docker run f85528450a6e (l'ID reçu de la commande précédente)
+
+docker ps
+docker exec 4e8c0e81d5ba <command shell> (le 1er paramètre c'est l'ID du container)
+
+docker exec  7d8e1efae2c9 wget http://80.0.0.0
+Logiquement ça boucle infini

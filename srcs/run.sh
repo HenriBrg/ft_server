@@ -1,45 +1,47 @@
+# Installations des packages sous Debian
+
 apt-get -y update
 apt-get -y upgrade
-
-apt-get -y install wget
-apt-get -y install php
-apt-get -y install nginx
-apt-get -y install php-mysql
 apt-get -y install mariadb-server
+apt-get -y install wget
+apt-get -y install php-{mbstring,zip,gd,xml,pear,gettext,cli,fpm,cgi}
+apt-get -y install php-mysql
+apt-get -y install libnss3-tools
+apt-get -y install nginx
 
-# NGINX
-# Usefull resources :
-# 	- https://www.linuxbabe.com/debian/install-lemp-stack-debian-10-buster
-# 	- https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/
-#	- https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-ubuntu-18-04
-#	- https://guillaumebriday.fr/comprendre-et-mettre-en-place-docker
+# ------------------------------------------------------------------------------
+# Mise en place du server EngineX (port 80 et SSL 443)
+# ------------------------------------------------------------------------------
 
 cd && mkdir -p /var/www/localhost
-cp nginx.conf /etc/nginx/sites/available/localhost
+cp /root/nginx-host-conf /etc/nginx/sites-available/localhost
 ln -s /etc/nginx/sites-available/localhost /etc/nginx/sites-enabled/
-chmod -R 755 /var/www/*
 
 # ------------------------------------------------------------------------------
+# Certificat SSL
 # ------------------------------------------------------------------------------
 
-# MariaDB
-# Usefull resources :
-# 	- https://www.itzgeek.com/how-tos/linux/debian/how-to-install-phpmyadmin-with-nginx-on-debian-10.html
+mkdir ~/mkcert && cd ~/mkcert
+wget https://github.com/FiloSottile/mkcert/releases/download/v1.1.2/mkcert-v1.1.2-linux-amd64
+mv mkcert-v1.1.2-linux-amd64 mkcert
+chmod +x mkcert
+./mkcert -install
+./mkcert localhost
+
+# ------------------------------------------------------------------------------
+# Création de la DB mySQL et branchement sur WordPress
+# ------------------------------------------------------------------------------
 
 service mysql start
 echo "CREATE DATABASE wordpress;" | mysql -u root
 echo "GRANT ALL PRIVILEGES ON wordpress.* TO 'root'@'localhost';" | mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
-# Inspired by : https://www.itzgeek.com/how-tos/linux/debian/how-to-install-mariadb-on-debian-10.html#nativepassword
 echo "update mysql.user set plugin = 'mysql_native_password' where user='root';" | mysql -u root
 cd && mysql wordpress -u root --password=  < wordpress.sql
 
 # ------------------------------------------------------------------------------
+# Ajout du WordPress dans le dossier /var/www/localhost/
 # ------------------------------------------------------------------------------
-
-# Wordpress
-# Usefull resources :
-# 	-
 
 cd && cp wordpress.tar.gz /var/www/localhost/
 cd /var/www/localhost/
@@ -47,33 +49,27 @@ tar -xf wordpress.tar.gz
 rm wordpress.tar.gz
 
 # ------------------------------------------------------------------------------
+# Mise en place de phpMyAdmin
 # ------------------------------------------------------------------------------
 
-# SSL on Nginx
-# Usefull resources :
-# 	- https://www.isicca.com/fr/lemp-installer-nginx-php7-mariadb/#c4
-
-mkdir ~/mkcert
-cd ~/mkcert
-wget https://github.com/FiloSottile/mkcert/releases/download/v1.1.2/mkcert-v1.1.2-linux-amd64
-mv mkcert-v1.1.2-linux-amd64 mkcert && \
-chmod +x mkcert
-./mkcert -install
-./mkcert localhost
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-
-
-# PHPmyAdmin
-# Usefull resources :
-# 	- https://www.itzgeek.com/how-tos/linux/debian/how-to-install-phpmyadmin-with-nginx-on-debian-10.html
-#	- https://docs.phpmyadmin.net/en/latest/setup.html
-
-cd && mkdir /var/www/localhost/phpmyadmin
-wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.tar.gz
-tar -zxvf phpMyAdmin-4.9.0.1-all-languages.tar.gz -C /var/www/localhost/phpmyadmin
+cd
+wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-english.tar.gz
+mkdir /var/www/localhost/phpmyadmin
+tar xzf phpMyAdmin-4.9.0.1-english.tar.gz -C /var/www/localhost/phpmyadmin
 cp /root/config.inc.php /var/www/localhost/phpmyadmin/
+
+
+# ------------------------------------------------------------------------------
+# Fixation des droits d'accès
+# ------------------------------------------------------------------------------
+
+chown -R www-data:www-data /var/www/*
+chmod -R 755 /var/www/*
+
+
+# ------------------------------------------------------------------------------
+# Démarrage du serveur + base de donnée + phpMyAdmin
+# ------------------------------------------------------------------------------
 
 service mysql restart
 /etc/init.d/php7.3-fpm start
