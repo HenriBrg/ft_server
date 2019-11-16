@@ -14,7 +14,7 @@ apt-get -y install nginx
 # ------------------------------------------------------------------------------
 
 cd && mkdir -p /var/www/localhost
-cp /root/nginx-host-conf /etc/nginx/sites-available/localhost
+cp /root/nginx.conf /etc/nginx/sites-available/localhost
 ln -s /etc/nginx/sites-available/localhost /etc/nginx/sites-enabled/
 
 # ------------------------------------------------------------------------------

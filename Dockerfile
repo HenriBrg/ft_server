@@ -1,7 +1,7 @@
 FROM debian:buster
 COPY src/wordpress.sql ./root/
-COPY src/nginx-host-conf ./root/
+COPY src/nginx.conf ./root/
 COPY src/wordpress.tar.gz ./root/
 COPY src/config.inc.php ./root/
 COPY src/run.sh ./
-CMD bash start.sh && tail -f /dev/null
+CMD bash run.sh && tail -f /dev/null
