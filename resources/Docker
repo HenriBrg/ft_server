@@ -8,7 +8,6 @@ Deuxième étape : On vérifie si chaque service tourne correctement
 
 Le serveur NGinx (port 80) et le SSL
 
-	docker exec 7d8e1efae2c9 wget http://80.0.0.0
 	docker exec 89adeea317c3 lsof -i -P
 
 --------------------------------------------------------------------------------
@@ -19,3 +18,11 @@ La commande docker-compose permet de gérer plusieurs containers simultanément,
 il faudra au préalable télécharger docker-compose.
 
 --------------------------------------------------------------------------------
+
+docker build .
+docker run -it -p 80:80 fc6161a429a3
+(On arrive dans debian)
+bash run.sh
+
+On va sur 127.0.0.1 --> nginx
+sur localhost, on doit tomber sur le wordpress avec /phpmyadmin, ...

@@ -55,12 +55,13 @@ rm wordpress.tar.gz
 cd
 wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-english.tar.gz
 mkdir /var/www/localhost/phpmyadmin
-tar xzf phpMyAdmin-4.9.0.1-english.tar.gz -C /var/www/localhost/phpmyadmin
+tar xzf phpMyAdmin-4.9.0.1-english.tar.gz --strip-components=1 -C /var/www/localhost/phpmyadmin
 cp /root/config.inc.php /var/www/localhost/phpmyadmin/
 
 
 # ------------------------------------------------------------------------------
 # Fixation des droits d'accès
+# www-data = utilisateur sur Debian
 # ------------------------------------------------------------------------------
 
 chown -R www-data:www-data /var/www/*

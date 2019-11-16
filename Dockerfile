@@ -4,4 +4,4 @@ COPY src/nginx.conf ./root/
 COPY src/wordpress.tar.gz ./root/
 COPY src/config.inc.php ./root/
 COPY src/run.sh ./
-CMD bash run.sh && tail -f /dev/null
+# CMD bash run.sh && tail -f /dev/null
