@@ -1,6 +1,5 @@
 FROM debian:buster
-COPY src/wordpress.sql ./root/
-COPY src/nginx.conf ./root/
-COPY src/wordpress.tar.gz ./root/
-COPY src/config.inc.php ./root/
-COPY src/run.sh ./
+COPY srcs/nginx.conf /etc/nginx/sites-available/
+COPY srcs/wordpress.zip /var/www/
+COPY srcs/wordpress.sql /var/www/
+COPY srcs/run.sh .
